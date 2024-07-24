@@ -1,8 +1,4 @@
 <script setup>
-import {useRuntimeConfig} from "#app";
-import {useAsyncData, useFetch} from "nuxt/app";
-
-const config = useRuntimeConfig()
 const route = useRoute()
 
 
@@ -10,19 +6,14 @@ const slug = route.params.slug
 
 const endpoint = 'https://jsonplaceholder.typicode.com/posts/' + slug
 
-/**
- * Hits the payload for client-side nav, but hits the CMS when reloading or direct navigation through entering a URL
- * Removing the `key` option resolves this
- * */
-const {data: article} = await useFetch(endpoint, {
+const { data: article } = await useFetch(endpoint, {
     key: 'articles-' + route.params.slug,
+    // Call this endpoint only on the server
+    server: true
 })
 
-// const {data: article} = await useAsyncData(route.fullPath, () => {
-//   return  $fetch(endpoint)
-// })
-
-
+// Hint nitro to prerender a json file for this endpoint
+prerenderRoutes(endpoint)
 </script>
 
 

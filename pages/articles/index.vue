@@ -1,9 +1,13 @@
 <script setup>
-import {useFetch} from "#app";
-import {ref} from "vue";
-
 const endpoint = 'https://jsonplaceholder.typicode.com/posts'
-const {data: articleData} = await useFetch(endpoint)
+const { data: articleData } = await useFetch(endpoint, {
+    // Call this endpoint only on the server
+    server: true
+})
+
+// Hint nitro to prerender a json file for this endpoint
+prerenderRoutes(endpoint)
+
 const articles = ref(articleData.value.slice(0,5))
 
 </script>
